@@ -1,0 +1,21 @@
+# Set the minimum age required for access
+MINIMUM_AGE = 18
+
+try:
+    # Ask the user for their age
+    user_input = input("Please enter your age: ")
+    
+    # Convert the input string into a whole number (integer)
+    age = int(user_input)
+
+    # Check if the user meets the age requirement
+    if age >= MINIMUM_AGE:
+        print("Access Granted. Welcome!")
+    elif age < 0:
+        print("Invalid input. Age cannot be a negative number.")
+    else:
+        print(f"Access Denied. You must be at least {MINIMUM_AGE} years old.")
+
+except ValueError:
+    # Handle cases where the user types letters or symbols instead of numbers
+    print("Invalid input. Please enter a valid number.")
