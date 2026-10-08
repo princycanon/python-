@@ -1,0 +1,62 @@
+import tkinter as tk
+import math
+
+def draw_flower():
+    # Center of the canvas
+    cx, cy = 250, 250
+    # Length and width ratio of each petal
+    petal_length = 120
+    
+    # 7 Classic Rainbow Colors (VIBGYOR order)
+    colors = ["#8B00FF", "#4B0082", "#0000FF", "#00FF00", "#FFFF00", "#FF7F00", "#FF0000"]
+    num_petals = len(colors)
+
+    # Draw the green stem
+    canvas.create_line(cx, cy, cx, 450, fill="#2E7D32", width=8)
+
+    # Draw each petal rotated around the center
+    for i in range(num_petals):
+        angle_deg = i * (360 / num_petals)
+        angle_rad = math.radians(angle_deg)
+        
+        # Generate points for a smooth ellipse-shaped petal
+        petal_points = []
+        for t in range(0, 361, 10):
+            t_rad = math.radians(t)
+            
+            # Local coordinates of a horizontal petal
+            lx = petal_length * math.cos(t_rad)
+            ly = (petal_length / 3) * math.sin(t_rad)
+            
+            # Shift the petal slightly outward so they don't completely overlap at the center
+            lx += petal_length / 1.5
+            
+            # Rotate the coordinates around the center point (cx, cy)
+            rx = lx * math.cos(angle_rad) - ly * math.sin(angle_rad)
+            ry = lx * math.sin(angle_rad) + ly * math.cos(angle_rad)
+            
+            petal_points.append(cx + rx)
+            petal_points.append(cy + ry)
+            
+        # Draw the petal polygon
+        canvas.create_polygon(petal_points, fill=colors[i], outline="white", width=1)
+
+    # Draw a bright yellow center (pistil) over the petals
+    r = 35
+    canvas.create_oval(cx - r, cy - r, cx + r, cy + r, fill="#FFD700", outline="#FFA500", width=2)
+
+# Set up the main window
+root = tk.Tk()
+root.title("Tkinter Rainbow Flower")
+root.geometry("500x500")
+root.configure(bg="#F0F0F0")
+
+# Create a canvas to draw on
+canvas = tk.Canvas(root, width=500, height=500, bg="#E3F2FD", highlightthickness=0)
+canvas.pack()
+
+# Draw the flower
+draw_flower()
+
+# Run the application
+root.mainloop()
